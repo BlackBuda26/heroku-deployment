@@ -1,0 +1,153 @@
+{% include("nav.html") %}
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-ingreso.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<section style="padding-top: 100px;" class="crear-cultivo">
+
+    <div class="body-formulario">
+        
+        <p style="padding: 20px;" class="letra">
+            <b>Ingrese los datos del cultivo</b> 
+        </p>
+
+        <form class="form-group" method="post" onsubmit="disableSubmitButton()">
+            <div class="input-container">
+                <input type="text" class="form-control" name="nombre_cultivo" id="nombre_cultivo" required>
+                <label for="nombre_cultivo">Nombre del cultivo:</label><br>
+
+                <input style="margin-top: 10px;" type="text" class="form-control" name="tipo_cultivo" id="tipo_cultivo" required>
+                <label style="margin-top: 80px" for="tipo_cultivo">Tipo de cultivo:</label><br>
+
+                <label style="margin-top: 155px" for="ubicacion_cultivo">Ubicación del cultivo:</label><br>
+                <button type="button" class="btn-map" onclick="toggleMap()">Seleccionar ubicación en el mapa</button>
+                <div id="map-container" style="display:none; margin-top: 10px;">
+                    <div id="map" style="height: 400px;"></div>
+                </div>
+                <input type="hidden" name="ubicacion_cultivo" id="ubicacion_cultivo" required>
+
+                <label style="margin-top: 230px" for="id_sensor">Numero de Serie del sensor:</label><br>
+                <br>
+                <br>
+                <select class="form-control" name="id_sensor" id="id_sensor" required>
+                    <option value="a1">a1</option>
+                    <option value="b2">b2</option>
+                    <option value="c3">c3</option>
+                    <option value="d4">d4</option>
+                </select>
+                <label style="margin-top: 230px" for="id_sensor">Numero de Serie del sensor:</label><br>
+
+                <div class="crear">
+                    <input type="submit" value="Crear" id="submitButton">
+                </div>
+            </div>
+        </form>
+
+        <div class="col" style="margin-top:5%;" id="logo">
+            <a href="{{ url_for('mis_cultivos') }}">
+                <img src="{{ url_for('static', filename='assets/misCultivo.png') }}" alt="" class="h-10 w-30">
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .crear {
+        display: flex;
+        justify-content: center; /* ajustar horizontalmente */
+    }
+    .crear input {
+        width: 50%;
+        background-color: #355834;
+        color: white; 
+        border-radius: 20px;
+    }
+    #logo {
+        display: flex;
+        align-items: center;
+        text-align: center;  
+        justify-content: center; /* ajustar horizontalmente */
+        margin-bottom: 20px;
+    }
+    .crear-cultivo{
+            width: 100%;
+            height: 100vh;
+            float: left;    
+            background-image:url(/static/assets/fondo\(home\).png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    .body-formulario {
+        width: 60%;
+        background-color: #fffdfd;
+        border-radius: 20px;
+    }
+    @media screen and (max-width: 910px) { 
+    }
+    @media screen and (min-width: 910px) { 
+        .cultivo-body {
+            width: 100%;
+        }
+    }
+
+    .btn-map {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #355834;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-map:hover {
+        background-color: #6eb973;
+    }
+</style>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    function disableSubmitButton() {
+        document.getElementById('submitButton').disabled = true;
+    }
+
+    function toggleMap() {
+        var mapContainer = document.getElementById('map-container');
+        if (mapContainer.style.display === 'none') {
+            mapContainer.style.display = 'block';
+            initMap(); // Inicializar el mapa solo cuando se muestra
+        } else {
+            mapContainer.style.display = 'none';
+        }
+    }
+
+    var map;
+    var marker;
+
+    function initMap() {
+        if (!map) {
+            map = L.map('map').setView([51.505, -0.09], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            map.on('click', onMapClick);
+        }
+    }
+
+    function onMapClick(e) {
+        if (marker) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker(e.latlng).addTo(map);
+        document.getElementById('ubicacion_cultivo').value = e.latlng.lat + ',' + e.latlng.lng;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,181 @@
+<!-- admin_view.html -->
+{% include("nav.html") %}  
+{% block title %}{% endblock %}
+  
+
+{% block content %}
+<!------LISTA DE USUARIOS---->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+  .caja{
+      margin: 2%;
+  }
+  .t{
+    font-family: 'Lobster', cursive;
+  }
+  table{
+    text-align: center;
+  }
+
+  @media (max-width: 858px) {
+    .table{
+      font-size: 12px;
+    }
+    .t{
+    text-align: center;
+  }
+  }
+
+  
+  /* Estilos para el modal */
+  .modal {
+      display: none; /* Ocultar el modal por defecto */
+      position: fixed; /* Posición fija */
+      z-index: 1; /* Ubicar el modal por encima de otros elementos */
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: auto; /* Agregar desplazamiento si es necesario */
+      background-color: rgba(0,0,0,0.4); /* Fondo oscuro */
+  }
+
+  .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% del espacio disponible arriba y abajo */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+  }
+
+  /* Estilo para cerrar el modal */
+  .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
+</style>
+
+{% if rows %}
+  <h1 class="text-center t" style="padding-top:110px ;"> Lista de Usuarios</h1>
+<div class="caja">
+  <table class="table table-striped" >
+    <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>
+              <button class="edit-btn" data-username="{{ row[2] }}" data-email="{{ row[4] }}" data-rol="{{ row[5] }}" data-id="{{ row[0] }}" style="background-color: #355834; color: #ffffff;">
+                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-pencil' viewBox='0 0 16 16'>
+                  <path d='M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z'/>
+              </svg>
+              </button>
+          
+
+              <form method="post" action="/delete_btn" style="display: inline;">
+                <input type="hidden" name="username" value="{{ row[2] }}">
+                <button type="submit" name="delete_btn" class="delete-btn" value="delete" style="background-color: #d9534f; color: #ffffff; border: none;">
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash' viewBox='0 0 16 16'>
+                        <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z'/>
+                        <path d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z'/>
+                    </svg>
+                </button>
+                
+            </form>
+
+          </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal para editar usuario -->
+<div id="edit-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Editar Usuario</h2>
+  
+    <form action="/admin_view" method="POST">
+
+      <label for="edit-id">ID:</label>
+      <input type="text" id="edit-id" name="id" readonly><br><br>
+
+      <label for="edit-username">Username:</label>
+      <input type="text" id="edit-username" name="username" readonly ><br><br>
+
+      <label for="edit-email">Email:</label>
+      <input type="email" id="edit-email" name="email"  ><br><br>
+
+      <label for="edit-rol">Rol:</label>
+      <input type="text" id="edit-rol" name="id_rol"  ><br><br>
+
+      <!-- Agrega otros campos que necesites editar -->
+      <button type="submit" name="action" value="edit">Guardar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var editButtons = document.querySelectorAll(".edit-btn");
+      var modal = document.getElementById("edit-modal");
+      var closeBtn = document.getElementsByClassName("close")[0];
+      var editUsernameField = document.getElementById("edit-username");
+      var editEmailField = document.getElementById("edit-email");
+      var editRolField = document.getElementById("edit-rol");
+      var editIdField = document.getElementById("edit-id");
+
+      editButtons.forEach(function(button) {
+          button.addEventListener("click", function() {
+              var username = this.getAttribute("data-username");
+              var email = this.getAttribute("data-email");
+              var id_rol = this.getAttribute("data-rol");
+              var id = this.getAttribute("data-id");
+              editUsernameField.value = username;
+              editEmailField.value = email;
+              editRolField.value = id_rol;
+              editIdField.value = id;
+              modal.style.display = "block";
+          });
+      });
+
+      closeBtn.onclick = function() {
+          modal.style.display = "none";
+      };
+
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      };
+  });
+</script>
+
+{% else %}
+<p>No hay datos</p>
+{% endif %}
+<!-------------FIN-->
+
+
+{% endblock %}

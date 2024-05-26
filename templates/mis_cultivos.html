@@ -1,0 +1,180 @@
+{% include("nav.html") %} 
+  
+{% block title %}Profile{% endblock %}
+  
+{% block content %}
+
+<body>
+    <header style="padding-top: 100px;">
+        <h1 style="color: #4E342E;" >
+            <strong>Mis Cultivos</strong>
+        </h1>
+    </header>
+    <main>
+        <section>
+            {% for cultivo in cultivos %}
+                <div class="cultivo-item">
+                    <section class="izquierda">
+                        <div class="cultivo-info">
+                            <p class="cultivo-titulo"><strong>{{ cultivo[1] }}</strong></p>
+                            <p><strong>Tipo:</strong> {{ cultivo[2] }}</p>
+                            <p><strong>Ubicación:</strong> {{ cultivo[3] }}</p>
+                        </div>
+                        <div class="cultivo-actions">
+                            <form action="/ver_datos_cultivo/{{ cultivo[0] }}" method="post" class="cultivo-form">
+                                <button type="submit" class="reportes-btn">Ver Reportes</button>
+                            </form>
+                            <form style="margin-left: 20px;" action="/eliminar_cultivo/{{ cultivo[0] }}" method="post" class="cultivo-form" onsubmit="return confirmDelete()">
+                                <input type="hidden" name="id_cultivo" value="{{ cultivo.id }}">
+                                <button type="submit" class="eliminar-btn">Eliminar Cultivo</button>
+                            </form>
+                        </div>
+                    </section>
+                    <section class="derecha">
+                        <img class="cultivo-img" src="/static/assets/cultivo.png">
+                    </section>
+                </div>
+            {% endfor %}
+            <div class="crear-cultivo" style="margin-top:5%;" id="logo">
+                <a href="{{ url_for('crear_cultivo') }}">
+                  <img src="{{ url_for('static', filename='assets/crearCultivo.png') }}" alt="Sensor bme280" class="h-10 w-30">
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+
+<script>
+    function confirmDelete() {
+        return confirm("¿Estás seguro de que deseas eliminar este cultivo?");
+    }
+</script>
+
+<style>
+    .crear-cultivo {
+        display: flex;
+        justify-content: center;
+    }
+
+    .izquierda {
+        width: 60%;
+    }
+    .derecha {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .cultivo-img {
+        max-height: auto;
+        min-height: 150px;
+        width: 50%;
+        min-width: 120px;
+    }
+
+    header {
+        color: #000000;
+        padding: 20px;
+        text-align: center;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .cultivo-item {
+        border: 1px solid #8CA884;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cultivo-info {
+        justify-content: center;
+        width: 100%;
+        flex-basis: 60%;
+        margin-bottom: 10px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cultivo-titulo {
+        margin-top: 0;
+        font-size: 40px;
+        overflow-wrap: break-word;
+    }
+
+    .cultivo-actions {
+        width: 100%;
+        flex-basis: 100%;
+        display: flex;
+    }
+
+    .reportes-btn,
+    .eliminar-btn {
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .reportes-btn {
+        background-color: rgba(103, 117, 93);
+    }
+    .eliminar-btn {
+        background-color: #ff0000;
+    }
+    .reportes-btn:hover {
+        background-color: #8CA884;
+    }
+    .eliminar-btn:hover {
+        background-color: rgba(255, 0, 0, 0.7);
+    }
+
+    @media screen and (min-width: 858px) {
+        .cultivo-info {
+            align-items: center;
+        }
+        .cultivo-titulo {
+            font-size: auto;
+        }
+        .cultivo-actions {
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    @media screen and (max-width: 858px) {
+        .cultivo-actions {
+            flex-direction: row;
+            align-items: flex-start;
+            font-size: 10px;
+        }
+        .cultivo-info {
+            font-size: 12px;
+        }
+        .cultivo-titulo {
+            font-size: 23px;
+        }
+        .cultivo-item {
+            border: 1px solid #8CA884;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+{% endblock %}

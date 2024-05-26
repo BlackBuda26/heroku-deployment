@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-ingreso.css') }}">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <section class="derecha">
+        <div class="login-body">
+            <div class="logo"> 
+                <img src="{{ url_for('static', filename='assets/logo.png') }}"
+                  alt="Login image" class="h-10 w-30">
+            </div>
+            <div class="form">
+                <div id="formulario">
+                    <!-- INICiA BOTONES -->
+                    <div class="container">
+                        <div class="btn-ingreso">
+                            <button id="loginBtn">Iniciar Sesión</button>
+                            <button id="registerBtn">Registrarme</button>
+                        </div>
+                        <style>
+                            #registerBtn{
+                              background-color: #355834;
+                              position: absolute;
+                              right: 0;
+                              width: 50%;
+                              height: auto;
+                            }
+                            #loginBtn{
+                              background-color: #B5B5B5;
+                              width: 60%;
+                              height: auto;
+                            }
+                        </style>
+
+                        <script>
+                            // Referencias a los botones
+                            const loginBtn = document.getElementById("loginBtn");
+                            const registerBtn = document.getElementById("registerBtn");
+                
+                            // Función para manejar el evento de clic en el botón de login
+                            loginBtn.addEventListener("click", function() {
+                              // Redireccionar a la página de login
+                              window.location.href = "/"; // Esto redirigirá a la raíz de tu aplicación Flask
+                            });
+                
+                            // Función para manejar el evento de clic en el botón de registro
+                            registerBtn.addEventListener("click", function() {
+                              // Redireccionar a la página de registro
+                              window.location.pathname = "{{ url_for('register') }}"
+                            });
+                
+                        </script>
+
+                    </div>
+                    <!-- ACABA BOTONES -->
+
+                    <p class="letra">
+                        <b>Bienvenido a </b> 
+                        <br> 
+                        <b>Lettuce Lovers</b>
+                    </p>
+
+                    <form class="form-group" action="{{ url_for('register') }}" method="post" autocomplete="off"> 
+
+                        <div class="input-container">
+
+                            <!-- Email -->
+                            <input type="text" class="form-control" name="email" id="email" required>
+                            <label for="email"><b>Correo Electrónico</b></label>
+                            <div id="email-error" class="error-message" style="display: none;"></div>
+
+                            <!-- Nombre -->
+                            <input style="margin-top: 30px; " type="text" class="form-control" name="fullname" id="fullname" required>
+                            <label id="nombre" style="margin-top: 80px"> <b>Nombre completo</b> </label>
+
+                            <!-- Username -->
+                            <input style="margin-top: 30px;" type="text" class="form-control" name="username" id="username" required>
+                            <label id="usuario" style="margin-top: 150px" for="username"> <b>Nombre de usuario</b> </label>
+
+                            
+                             <!-- Password-->
+                             <input style="margin-top: 30px;" type="password" class="form-control" name="password"  id="password" required>
+                             <label id="clave" style="margin-top: 225px" for="password" > <b>Contraseña</b></label>
+                             <button type="button" id="togglePassword" style="position: absolute; right: 5px;top: 65%; transform: translateY(-50); background: none; border: none;">
+                             <i id="eyeIcon" class="fa fa-eye" style="border: none;"></i>
+                             </button>
+                             <div id="password-error" class="error-message" style="display: none;"></div>
+                             
+                        
+                             <script>
+                                // Función para validar la contraseña
+                                function validarContraseña(password) {
+                                    // Verifica que la contraseña tenga al menos 8 caracteres, contenga al menos una letra mayúscula y una minúscula, dos numeros y un simbolo
+                                    const isValid = password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) && (password.match(/\d/g) || []).length >= 2 && /[^\w\s]/.test(password);
+                            
+                                    // Obtener referencia al elemento togglePassword
+                                    const togglePassword = document.getElementById('togglePassword');
+                            
+                                    // Cambiar la posición del togglePassword
+                                    if (password === '' || isValid) {
+                                        togglePassword.style.top = '65%'; // Cambiar la posición vertical
+                                    } else {
+                                        togglePassword.style.top = '55.5%'; // Cambiar la posición vertical
+                                    }
+                            
+                                    return isValid;
+                                }
+                            
+                                // Manejador de evento para el campo de contraseña
+                                document.getElementById('password').addEventListener('input', function() {
+                                    const passwordInput = this.value.trim(); // Elimina espacios en blanco al principio y al final
+                                    const passwordError = document.getElementById('password-error');
+                                    const inputWrapper = this.closest('.input-wrapper'); // Buscar el contenedor del campo
+                            
+                                    // Validar contraseña y actualizar posición del botón togglePassword
+                                    validarContraseña(passwordInput);
+                            
+                                    // Validar si el campo está vacío y ocultar el mensaje de error si es así
+                                    if (passwordInput === '') {
+                                        passwordError.style.display = 'none'; // Ocultar el mensaje de error si el campo está vacío
+                                        inputWrapper.classList.remove('error'); // Remover clase de error del contenedor
+                                    } else {
+                                        // Validar la contraseña y mostrar el mensaje de error si no es válida
+                                        if (!validarContraseña(passwordInput)) {
+                                            passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, dos números y un símbolo.';
+                                            passwordError.style.display = 'block'; // Mostrar el mensaje de error
+                                            inputWrapper.classList.add('error'); // Agregar clase de error al contenedor
+                                        } else {
+                                            passwordError.style.display = 'none'; // Ocultar el mensaje de error si la contraseña es válida
+                                            inputWrapper.classList.remove('error'); // Remover clase de error del contenedor
+                                        }
+                                    }
+                                });
+                            </script>
+                            
+
+                             <script>
+                                 $(document).ready(function() {
+                                     $("#togglePassword").click(function() {
+                                         var passwordField = $("#password");
+                                         var icon = $("#eyeIcon");
+                                         var fieldType = passwordField.attr('type');
+                 
+                                         if (fieldType === 'password') {
+                                             passwordField.attr('type', 'text');
+                                             icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                                         } else {
+                                             passwordField.attr('type', 'password');
+                                             icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                                         }
+                                     });
+                                 });
+                             </script>
+
+                            <script>
+                                // Función para validar la contraseña
+                                function validarEmail(email) {
+                                    const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);  
+
+                                    // Obtener referencia al elemento name
+                                    const name = document.getElementById('nombre');
+                                    const usuario = document.getElementById('usuario');
+                                    const clave = document.getElementById('clave');
+                                    const togglePassword = document.getElementById('togglePassword');
+
+                                    if (email !== '' && !correoValido) {
+                                        name.style.marginTop = '120px';
+                                        usuario.style.marginTop = '194px'; 
+                                        clave.style.marginTop = '268px'; 
+                                        togglePassword.style.marginTop = '10px'; 
+                                    } else {
+                                        name.style.marginTop = '80px'; 
+                                        usuario.style.marginTop = '150px';
+                                        clave.style.marginTop = '225px'; 
+                                        togglePassword.style.marginTop = '10px'; 
+                                    }
+
+
+                                    return correoValido;
+                                }
+
+                                // Manejador de evento para el campo de contraseña
+                                document.getElementById('email').addEventListener('input', function() {
+                                    const emailInput = this.value.trim(); // Elimina espacios en blanco al principio y al final
+                                    const emailError = document.getElementById('email-error');
+                                    const inputWrapper = this.closest('.input-wrapper'); // Buscar el contenedor del campo
+
+                                    // Validar contraseña y actualizar el marginTop del name
+                                    validarEmail(emailInput);
+
+                                    // Validar si el campo está vacío y ocultar el mensaje de error si es así
+                                    if (emailInput === '') {
+                                        emailError.style.display = 'none'; // Ocultar el mensaje de error si el campo está vacío
+                                        inputWrapper.classList.remove('error'); // Remover clase de error del contenedor
+                                    } else {
+                                        // Validar la contraseña y mostrar el mensaje de error si no es válida
+                                        if (!validarEmail(emailInput)) {
+                                            emailError.textContent = 'El formato de correo es incorrecto.';
+                                            emailError.style.display = 'block'; // Mostrar el mensaje de error
+                                            inputWrapper.classList.add('error'); // Agregar clase de error al contenedor
+                                        } else {
+                                            emailError.style.display = 'none'; // Ocultar el mensaje de error si la contraseña es válida
+                                            inputWrapper.classList.remove('error'); // Remover clase de error del contenedor
+                                        }
+                                    }
+                                });
+                            </script>
+
+
+                            <!-- <input type="submit" value="Register" class="form-control btn btn-primary " name=""> -->
+                            <input type="submit" value="Registrarme" class="form-control btn" id="ingreso" name="">
+
+                        </div>
+
+                    
+
+                        <!-- alertas -->
+                        <div>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                              {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                  {{ message }}
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                  </button>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+                          {% endwith %}
+                          
+                    
+                        </div>
+                        
+                    </form>
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="izquierda">
+    </section>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+</body>
+</html>

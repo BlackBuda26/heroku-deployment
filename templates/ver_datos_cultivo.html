@@ -1,0 +1,121 @@
+{% include("nav.html") %}
+{% block title %}
+ Ver Datos del Cultivo
+{% endblock %}
+
+{% block content %}
+<style>
+  /* Existing styles... */
+
+  .button-container {
+    display: flex;
+    justify-content: space-around; /* Evenly distribute buttons */
+    margin-bottom: 20px;
+    align-items: center;
+    border-style: ridge;
+  }
+
+  .data-table {
+  width: 100%; /* Maintain full width */
+  border-collapse: collapse;
+  margin: 20px auto; /* Add margins and center the table */
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px;
+  text-align: center; /* Center align table content */
+  border-bottom: 1px solid #343434;
+}
+
+.data-table th {
+  background-color:rgb(71, 81, 64);
+}
+
+.data-table tr:nth-child(odd) {
+  background-color:rgba(103, 117, 93); /* Alternate row color */
+}
+.data-table tr:nth-child(even) {
+  background-color:rgb(161, 183, 145); /* Alternate row color */
+}
+  .mes-bottom {
+  max-width: 40px; 
+  height: fit-content; /* or object-fit: contain; */
+}
+
+</style>
+
+<h1 style="text-align: center; padding: 30px;">Datos del Cultivo</h1>
+
+<div class="button-container">
+  <div class="form-container">
+    <form method="post">
+      <input type="date" id="fecha" name="fecha" value="{{ fecha_predeterminada }}">
+      <button type="submit" class="btn">Filtrar</button>
+    </form>
+  </div>
+  <div class="form-container">
+    <form action="{{ url_for('analisis_cultivo', id_cultivo=id_cultivo) }}" method="POST">
+      <select name="mes" id="mes">
+        <option value=""></option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+      </select>
+      <button type="submit" class="btn btn-right">
+        <img src="/static/assets/analisis.png" class="mes-bottom">
+      </button>
+    </form>
+  </div>
+</div>
+
+{% if mensaje_error %}
+<div class="alert alert-danger">{{ mensaje_error }}</div>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+
+{% if datos_sensor %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Temperatura</th>
+      <th>pH</th>
+      <th>Presión</th>
+      <th>Humedad</th>
+      <th>Sustrato</th>
+      <th>Electroresistencia</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for dato in datos_sensor %}
+      <tr>
+        <td>{{ dato['fecha'] }}</td> 
+        <td>{{ dato['temperatura'] }}</td>
+        <td>{{ dato['ph'] }}</td>
+        <td>{{ dato['presion'] }}</td>
+        <td>{{ dato['humedad'] }}</td>
+        <td>{{ dato['sustrato'] }}</td>
+        <td>{{ dato['electroresistencia'] }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

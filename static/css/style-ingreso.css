@@ -1,0 +1,208 @@
+body{
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+}
+
+/* botones de ingreso */
+.btn-ingreso{
+   padding-top: 20px;
+   display: flex;
+   position: relative;
+}
+
+#loginBtn{
+   border-radius: 20px;
+   height: auto;
+   line-height: 4;
+   color: #ffffff;
+   font-size: 14px;
+}
+
+ #registerBtn{
+   border-radius: 20px;
+   height: auto;
+   line-height: 4;
+   color: #ffffff;
+   font-size: 14px;
+}
+
+/* Bienvenida */
+.letra{
+   position: relative;
+   align-items: center;
+   text-align: center;
+   font-size: 24px;
+   font-size: "assets/font/OpenSans-ExtraBold.ttf";
+   margin-bottom: 30px;
+   margin-top: 20px; 
+}
+
+/* formulario*/ 
+.form-group{
+   margin-bottom: 15px;
+}
+
+input[type="text"], input[type="password"] {
+   border: none;
+   background: none;
+   outline: none;
+   padding: 0;
+
+   font-size: inherit;
+}
+.col-sm-6 {
+   width: 100% !important; /* Ocupar todo el ancho disponible */
+   height: 100vh !important;
+   }
+   
+
+
+/* remember */
+.input-container,
+.submit-container {
+   width: 80%; 
+   margin: 0 auto; 
+   color: #7a8383;
+   margin-bottom: 10px;
+   font-size: 15px; 
+}
+
+
+.input-container {
+   position: relative;
+}
+  
+.input-container label {
+   position: absolute;
+   pointer-events: none;
+   left: 10px; /* Ajusta según sea necesario */
+   top: 0px; /* Ajusta según sea necesario */
+   transition: 0.2s ease all;
+   color: #837A7A; /* Color de la etiqueta por defecto */
+   font-size: 14px;
+   margin-bottom: 0.5rem; 
+}
+
+.input-container input:valid + label,
+.input-container input:focus + label {
+   top: -25px; /* Mueve la etiqueta hacia arriba cuando está en estado válido o enfocado */
+   font-size: 12px; /* Opcional: ajusta el tamaño de la etiqueta cuando está arriba */
+   color: #355834; /* Color de la etiqueta al estar en estado válido o enfocado */
+}
+  
+.input-container input {
+   width: 100%;
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   outline: none;
+   transition: border-color 0.2s ease;
+}
+
+.input-container input:focus,
+.input-container input:valid {
+   border-color: #355834; 
+}
+
+
+.container {
+   text-align: center;
+}
+
+#ingreso{
+   background-color: #355834; 
+   color: white; 
+   margin-top: 20px; 
+   margin-bottom: 20px;
+   border-radius: 20px;
+}
+
+/*  REPONSIVE */
+
+@media screen and (max-width: 910px) { 
+   .derecha{
+      width: 100%;
+      height: 100vh;
+      float: left;    
+      background-image:url(/static/assets/fondo.jpeg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+   #formulario{
+      /* background-color: #f3f3f3; */
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 20px ;
+   }
+}
+
+
+@media screen and (min-width: 910px) { 
+
+   .row {
+      padding: 0 !important; /* Eliminar el relleno para ocupar todo el ancho */
+      display: flex;
+      justify-content: center; /* Centrar horizontalmente */
+      align-items: center; /* Centrar verticalmente */
+      height: 100vh; /* Establecer la altura del contenedor para ocupar toda la altura de la pantalla */
+    }
+   .logo{
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+   }
+   
+   .logo img{
+      object-fit: cover;
+      margin-bottom: 20px; 
+      
+   }
+
+   .izquierda{
+    width: 50%;
+    height: 100%;
+    float: left;
+    background-image:url(/static/assets/fondo.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+   }
+
+   .derecha{
+      width: 50%;
+      height: 100vh;
+      float: left;    
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+
+   /* Centrar contenedor de formulario */
+   .form{
+      display: flex;
+      justify-content: center;
+   }
+   #formulario{
+      background-color: #F3F3F3;
+      width: 50%;
+      border-radius: 20px ;
+      position: center;
+   }
+   .login-body, .cultivo-body{
+        width: 100%;
+   }
+
+}
+/* fin del responsive  */
+
+
+/* CSS LAYOUT.HTML */
+#izquierda{
+   width: 100%;
+   background-color: #355834;
+}
+

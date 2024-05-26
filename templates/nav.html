@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    
+    <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav style="position:fixed;">
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+            <i class="fas fa-bars"></i> 
+        </label>
+        <a href="{{ url_for('home') }}" class="enlace">
+            <img src="/static/assets/logo.png" alt="" class="logo">
+        </a>
+        <ul class="opciones-nav">
+            {% if not admin_view %}
+            <li>
+                <a href="{{ url_for('home') }}">Inicio</a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="{{ url_for('profile') }}">Perfil</a>
+            </li>
+            <li>
+                <a href="{{ url_for('login') }}">Cerrar Sesión</a>
+            </li>
+        </ul>
+    </nav>
+</body>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+    nav {
+        background: rgba(103, 117, 93);
+        height: 100px;
+        width: 100%;
+        z-index: 1000;
+    }
+    .enlace {
+        position: absolute;
+        padding: 20px 50px;
+    }
+    .logo {
+        margin-top: 0;
+        width: 150px;
+        height: 75px;
+    }
+    nav ul {
+        float: right;
+        margin-right: 20px;
+    }
+    nav ul li {
+        display: inline-block;
+        line-height: 100px;
+        margin: 0 5px;
+    }
+    nav ul li a {
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        padding: 7px 13px;
+        border-radius: 3px;
+        text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+        text-decoration: none;  /* Añadir esta línea */
+    }
+    li a.active, li a:hover {
+        color: #BFA67E;
+        transition: .5s;
+    }
+    .checkbtn {
+        font-size: 30px;
+        color: rgb(0, 0, 0);
+        float: right;
+        line-height: 100px;
+        margin-right: 40px;
+        cursor: pointer;
+        display: none;
+    }
+    #check {
+        display: none;
+    }
+    @media (max-width: 952px) {
+        .enlace {
+            padding-left: 20px;
+        }
+        nav ul li a {
+            font-size: 16px;
+        }
+    }
+    @media (max-width: 858px) {
+        .checkbtn {
+            display: block;
+        }
+        .opciones-nav {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: #8CA884;
+            top: 100px;
+            left: -100%;
+            text-align: center;
+            transition: all .5s;
+        }
+        nav ul li {
+            display: block;
+            margin: 50px 0;
+            line-height: 30px;
+        }
+        nav ul li a {
+            font-size: 20px;
+        }
+        li a:hover, li a.active {
+            color: #F7E69C;
+        }
+        #check:checked ~ ul {
+            left: 0;
+        }
+    }
+</style>
+</html>

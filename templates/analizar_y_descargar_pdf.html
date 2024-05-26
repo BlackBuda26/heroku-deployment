@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis con ChatGPT</title>
+</head>
+<body>
+    <div>
+        <h1>Resultado del Análisis con ChatGPT</h1>
+        <p>El análisis de los datos del sensor ha sido completado con éxito. A continuación, se muestra el resumen generado por ChatGPT:</p>
+        <div>
+            <!-- Aquí se muestra el resultado del análisis -->
+            <p>{{ respuesta_chatgpt }}</p>
+        </div>
+    </div>
+    <div>
+        <!-- Botón para descargar el informe en formato PDF -->
+        <form action="{{ url_for('analizar_y_descargar_pdf', id_cultivo=id_cultivo) }}" method="post">
+            <button type="submit">Descargar Informe en PDF</button>
+        </form>
+    </div>
+</body>
+</html>
