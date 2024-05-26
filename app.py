@@ -58,7 +58,7 @@ def insertar_datos(temperatura, humedad, hora):
 
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     if 'loggedin' in session:
         # User is loggedin show them the home page
